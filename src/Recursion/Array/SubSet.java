@@ -6,8 +6,9 @@ import java.util.Arrays;
 
 public class SubSet {
     public static void main(String[] args) {
-        int[] arr ={1,2,2,2};
+        int[] arr ={1,2,2,3};
         System.out.println(subsetDuplicate(arr));
+        System.out.println(subsetRegression(arr,0,new ArrayList<>()));
     }
     public static List<List<Integer>> subSet(int[] arr){
         List<List<Integer>> outer = new ArrayList<>();
@@ -38,7 +39,7 @@ public class SubSet {
             if (i > 0 && arr[i] == arr[i - 1]) {
                 start = end + 1;
             }
-
+            System.out.println(start);
             end = outer.size() - 1;
             int n = outer.size();
 
@@ -49,5 +50,25 @@ public class SubSet {
             }
         }
         return outer;
+    }
+
+    public static List<List<Integer>> subsetRegression(int[] nums,int index,List<Integer> p){
+        List<List<Integer>> ans = new ArrayList<>();
+        if(index==nums.length){
+            ans.add(new ArrayList<>(p));
+            return ans;
+        }
+        int num=nums[index];
+        List<Integer> include = new ArrayList<>(p);
+        include.add(num);
+        ans.addAll(subsetRegression(nums,index+1,include));
+
+        //to skip duplicates
+        while (index+1<nums.length && nums[index+1]==nums[index]){
+            index++;
+        }
+        ans.addAll(subsetRegression(nums,index+1,p));
+
+        return ans;
     }
 }
